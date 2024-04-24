@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Song</title>
+</head>
+<body>
+    <h1>Edit Song</h1>
+    <form method="post" action="{% url 'update song' song.id playlist_id%}">
+        {% csrf_token %}
+        <label for="song_name">Song Name:</label><br>
+        <input type="text" id="song_name" name="song_name" value="{{song.name}}"required><br>
+
+        <label for="artists">Artists: (comma seperated)</label><br>
+        <input type="text" id="artists" name="artists" value = "{% for artist in song.artist_set.all %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}" required><br>
+
+        <label for="duration">Duration:</label><br>
+        <input type="text" id="duration" name="duration" placeholder="HH:MM:SS" value = "{{song.duration}}" required><br>
+
+        <label for="genre">Genre:</label><br>
+        <input type="text" id="genre" name="genre" value="{{song.genre}}" required><br>
+
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

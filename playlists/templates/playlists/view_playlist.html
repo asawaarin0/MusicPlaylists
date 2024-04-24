@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Details</title>
+    <style>
+        table {
+            width: 50%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .button-container a {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button {
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding:5px;
+        }
+        .update-button {
+            color: #fff;
+            background-color: #FFA500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding:5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <h1>{{ playlist.name }}</h1>
+        <div>
+            <a style="background-color:blue" href="{% url 'index'%}">Home</a>
+            <a style="background-color:red" href="{% url 'delete playlist' playlist.id %}">Delete Playlist</a>
+            <a style="background-color:green" href="{% url 'add song' playlist.id  %}">Add Song</a>
+            <a style="background-color:purple" href="{% url 'edit playlist' playlist.id  %}">Change Playlist Name</a>
+        </div>
+    </div>
+    <h3>Date Created: {{ playlist.date_created }} UTC</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Song Name</th>
+                <th>Genre</th>
+                <th>Artists</th>
+                <th>Duration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in playlist.song_set.all %}
+            <tr>
+                <td>{{ song.name }}</td>
+                <td>{{ song.genre }}</td>
+                <td>
+                    {% for artist in song.artist_set.all %}
+                        {{ artist.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ song.duration }}</td>
+                <td><a class="delete-button" href="{% url 'delete song' song.id playlist.id %}">Delete</a> <a class="update-button"  href="{% url 'edit song' song.id playlist.id%}"> Update</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

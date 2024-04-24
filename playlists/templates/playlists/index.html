@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Playlists</title>
+    <style>
+        .playlist-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .playlist-item:hover {
+            background-color: #e0e0e0;
+        }
+        .list_style {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+        }
+        .add-button {
+            background-color: #007bff; /* Blue color for button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right; /* Align the button to the right */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+        <h1 style="display:inline-block;">My Playlists</h1> 
+        <a class="add-button" href="{% url 'add playlist' %}">Add Playlist</a> 
+        <ul class="list_style">
+            {% for playlist in my_playlists %}
+            <a href="{% url 'view playlist' playlist.id %}"> <li class="playlist-item"> {{ playlist.name }} </li> </a>
+            {% endfor %}
+        </ul>
+</body>
+</html>

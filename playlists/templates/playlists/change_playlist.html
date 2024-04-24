@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Playlist Name</title>
+</head>
+<body>
+    <h1>Change Playlist Name</h1>
+    <form method="post" action="{% url 'update playlist' playlist.id %}">
+        {% csrf_token %}
+        <label for="playlist_name">Change Playlist Name</label><br>
+        <input type="text" id="playlist_name" name="name" value="{{playlist.name}}"><br><br>
+        <input type="submit" value="Update Playlist">
+    </form>
+</body>
+</html>
