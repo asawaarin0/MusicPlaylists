@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Playlist Report</title>
+    <style>
+        table {
+            width: 50%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .button-container a {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button {
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding:5px;
+        }
+        .update-button {
+            color: #fff;
+            background-color: #FFA500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding:5px;
+        }
+        .stats {
+            text-align: center;
+        }
+        ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <h1>My Playlist Report</h1>
+        <div>
+            <a style="background-color:blue" href="{% url 'index'%}">Home</a>
+        </div>
+    </div>
+    <h3>Playlist: {{playlist_name}}</h3>
+    <h3>Genre: {{genre}}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Song Name</th>
+                <th>Genre</th>
+                <th>Artists</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in results %}
+            <tr>
+                <td>{{ song.name }}</td>
+                <td>{{ song.genre }}</td>
+                <td>
+                    {{song.artists}}
+                </td>
+                <td>{{ song.duration }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <div class="stats">
+        <p><b>Number Of Songs:</b> {{num_songs}}</p>
+        <p><b>Most Frequently Appearing Artist(s): </b>
+            {% for artist in most_popular_artists %}
+                {{ artist }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p><b>Longest Song(s):</b></p>
+        <ul>
+            {% for song in longest_songs %}
+                <li>{{song.name}} - {{song.duration}}</li>
+            {% endfor %}
+        </ul>
+        <p><b>Shortest Song(s):</b></p>
+        <ul>
+            {% for song in shortest_songs %}
+                <li>{{song.name}} - {{song.duration}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

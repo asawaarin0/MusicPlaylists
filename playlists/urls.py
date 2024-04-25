@@ -14,7 +14,9 @@ urlpatterns = [
     path("edit_song/<int:song_id>/<int:playlist_id>/",  views.edit_song, name = "edit song"),
     path("update_song/<int:song_id>/<int:playlist_id>/",  views.update_song, name = "update song"),
     path("edit_playlist/<int:playlist_id>/",  views.edit_playlist, name = "edit playlist"),
-    path("update_playlist/<int:playlist_id>/",  views.update_playlist, name = "update playlist")
+    path("update_playlist/<int:playlist_id>/",  views.update_playlist, name = "update playlist"),
+    path("create_report", views.create_playlist_report, name = "create report"),
+    path("view_report", views.view_playlist_report, name = "view report")
 
 
 

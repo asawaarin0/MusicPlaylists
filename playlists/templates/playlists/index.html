@@ -31,11 +31,23 @@
             float: right; /* Align the button to the right */
             margin-top: 20px;
         }
+        .create-button {
+            background-color: #800080; /* green color for button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            float:right;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
         <h1 style="display:inline-block;">My Playlists</h1> 
         <a class="add-button" href="{% url 'add playlist' %}">Add Playlist</a> 
+        <a class="create-button" href="{% url 'create report' %}">Create Playlist Report</a> 
         <ul class="list_style">
             {% for playlist in my_playlists %}
             <a href="{% url 'view playlist' playlist.id %}"> <li class="playlist-item"> {{ playlist.name }} </li> </a>
