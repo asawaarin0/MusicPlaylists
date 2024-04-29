@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Playlist, Artist, Song
 from datetime import timedelta
 from django.db import connection
+from django.db import transaction
+
 # Create your views here
 
 def index(request):
@@ -14,6 +16,7 @@ def index(request):
 def add_playlist(request):
     return render(request, "playlists/add_playlist.html")
 
+@transaction.atomic
 def create_playlist(request):
     if request.method == 'POST':
         name = request.POST.get('playlist_name')
@@ -28,6 +31,7 @@ def view_playlist(request, playlist_id):
     context = {"playlist":playlist}
     return render(request, "playlists/view_playlist.html", context)
 
+@transaction.atomic
 def delete_playlist(request, playlist_id):
     playlist = Playlist.objects.get(id = playlist_id)
     playlist.delete()
@@ -38,6 +42,7 @@ def add_song(request, playlist_id):
     context = {"playlist_id":playlist_id}
     return render(request, "playlists/add_song.html", context)
 
+@transaction.atomic
 def create_song(request, playlist_id):
     if request.method == 'POST':
         song_name = request.POST.get("song_name")
@@ -67,6 +72,7 @@ def create_song(request, playlist_id):
             song.save()
         return redirect('view playlist', playlist_id=playlist_id)
 
+@transaction.atomic
 def delete_song(request, song_id, playlist_id):
         song = Song.objects.get(pk=song_id)
         playlist = Playlist.objects.get(pk=playlist_id)
@@ -76,11 +82,13 @@ def delete_song(request, song_id, playlist_id):
 
 
 
+@transaction.atomic
 def edit_song(request, song_id, playlist_id):
     song = Song.objects.get(pk=song_id)
     context={"song":song, "playlist_id":playlist_id}
     return render(request, "playlists/edit_song.html", context)
 
+@transaction.atomic
 def update_song(request, song_id, playlist_id):
     if request.method == 'POST':
         #get updated details
@@ -111,6 +119,7 @@ def edit_playlist(request, playlist_id):
     context = {"playlist":playlist}
     return render(request, "playlists/change_playlist.html", context)
 
+@transaction.atomic
 def update_playlist(request, playlist_id):
     if request.method == 'POST':
         playlist = Playlist.objects.get(id = playlist_id)
@@ -122,6 +131,7 @@ def update_playlist(request, playlist_id):
 def create_playlist_report(request):
     return render(request, "playlists/create_report.html", {"my_playlists":Playlist.objects.all()})
 
+@transaction.atomic
 def view_playlist_report(request):
     if request.method == 'POST':
         #execute prepared statement for given filtering criteria
