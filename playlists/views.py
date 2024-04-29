@@ -127,15 +127,26 @@ def view_playlist_report(request):
         #execute prepared statement for given filtering criteria
         with connection.cursor() as cursor:
             cursor.execute("DROP VIEW IF EXISTS results")
-            cursor.execute("""
+            if request.POST.get("playlist").split(";")[0] == "All":
+                 cursor.execute("""
                                 CREATE VIEW results as
                                 SELECT song.id as song_id, artist.id as artist_id, song.name as name, song.genre as Genre,  artist.name as artist_name, song.duration as Duration
                                 FROM playlists_song_playlists as song_playlist
                                 JOIN playlists_song as song on song.id = song_playlist.song_id
                                 JOIN playlists_artist_songs as artist_songs on artist_songs.song_id = song.id
                                 JOIN playlists_artist as artist on artist.id = artist_songs.artist_id
-                                where song_playlist.playlist_id = %s AND genre = %s
-                           """, [request.POST.get("playlist").split(";")[0], request.POST.get("genre")])
+                                where genre = %s
+                           """, [request.POST.get("genre")])
+            else:
+                cursor.execute("""
+                                    CREATE VIEW results as
+                                    SELECT song.id as song_id, artist.id as artist_id, song.name as name, song.genre as Genre,  artist.name as artist_name, song.duration as Duration
+                                    FROM playlists_song_playlists as song_playlist
+                                    JOIN playlists_song as song on song.id = song_playlist.song_id
+                                    JOIN playlists_artist_songs as artist_songs on artist_songs.song_id = song.id
+                                    JOIN playlists_artist as artist on artist.id = artist_songs.artist_id
+                                    where song_playlist.playlist_id = %s AND genre = %s
+                            """, [request.POST.get("playlist").split(";")[0], request.POST.get("genre")])
             cursor.execute("DROP VIEW IF EXISTS results_grouped")
             cursor.execute("CREATE VIEW results_grouped as SELECT name, Genre, TRIM(TRAILING ',' FROM GROUP_CONCAT(artist_name SEPARATOR ', ')) , Duration FROM results GROUP BY song_id")
             cursor.execute("SELECT * FROM results_grouped")
@@ -209,7 +220,6 @@ def view_playlist_report(request):
                 "longest_songs":longest_songs,
                 "shortest_songs":shortest_songs
             }
-            print(context)
             return render(request, "playlists/view_report.html", context)
 
 

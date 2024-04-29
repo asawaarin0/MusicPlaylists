@@ -56,10 +56,10 @@
         <h2 style="text-align: center;">Create Playlist Report</h2>
         <label for="playlist">Playlist:</label>
         <select id="playlist" name="playlist">
+            <option value="All;All">All</option>
             {% for playlist in my_playlists %}
             <option value="{{playlist.id}};{{playlist.name}}">{{playlist.name}}</option>
             {% endfor %}
-            <!-- Add more playlists as needed -->
         </select>
         <label for="genre">Genre:</label>
         <input type="text" id="genre" name="genre" maxlength="100">
